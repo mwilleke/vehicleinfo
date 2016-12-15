@@ -3,11 +3,12 @@ package enterprise.com.vehicleinfo;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements YearFragment.OnYearSelectedListener {
+public class MainActivity extends AppCompatActivity implements YearFragment.OnYearSelectedListener, MakeFragment.OnMakeSelectedListener, ModelFragment.OnModelSelectedListener {
 
     private YearFragment yearFragment;
+    private MakeFragment makeFragment;
+    private String selectedYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,41 +26,34 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnYe
     }
 
     public void onYearSelected(String year) {
-       // MakeFragment makeFragment = (MakeFragment) getSupportFragmentManager().findFragmentById(R.layout.fragment_make);
-
-        //MakeFragment makeList = new MakeFragment();
-        //getFragmentManager().beginTransaction().replace(R.id.list_year_fragment, makeList).commit();
 
         MakeFragment makeFragment = new MakeFragment();
         Bundle args = new Bundle();
         args.putString("year", year);
+        selectedYear = year;
         makeFragment.setArguments(args);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, makeFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
 
+    public void onMakeSelected(String make) {
 
-        /*MakeFragment makeFragment = new MakeFragment();
+        ModelFragment modelFragment = new ModelFragment();
+        Bundle args = new Bundle();
+        args.putString("make", make);
+        args.putString("year", selectedYear);
+        modelFragment.setArguments(args);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.list_year_fragment, makeFragment);
+        transaction.replace(R.id.fragment_container, modelFragment);
         transaction.addToBackStack(null);
-        transaction.commit();*/
+        transaction.commit();
+    }
 
+    public void onModelSelected(String make) {
 
-        //if (makeFragment != null) {
-           // makeFragment.updateMakeView(year);
-        //} else {
-            //MakeFragment fragment = new MakeFragment();
-            //Bundle args = new Bundle();
-            //args.putString("year", year);
-            //fragment.setArguments(args);
-
-            //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            //transaction.replace(R.id.list_year_fragment, fragment);
-           // transaction.addToBackStack(null);
-       //     transaction.commit();
-        // }
     }
 }
